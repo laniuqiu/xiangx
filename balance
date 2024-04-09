@@ -1,0 +1,16 @@
+const Web3 = require('web3');
+
+// 连接到以太坊节点
+const web3 = new Web3('https://mainnet.infura.io/v3/your_infura_project_id');
+
+// 要查询余额的账户地址
+const addressToCheck = '0xYourEthereumAddress';
+
+// 查询账户余额
+web3.eth.getBalance(addressToCheck)
+  .then(balance => {
+    console.log('Balance:', web3.utils.fromWei(balance, 'ether'), 'ETH');
+  })
+  .catch(error => {
+    console.error('Error occurred:', error);
+  });
