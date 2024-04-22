@@ -1,0 +1,36 @@
+pragma solidity ^0.8.0;
+
+contract MintableToken {
+    string public name;
+    string public symbol;
+    uint8 public decimals;
+    address public owner;
+    mapping(address => uint) public balanceOf;
+
+    event Transfer(address indexed from, address indexed to, uint value);
+    event Mint(address indexed to, uint value);
+
+    constructor(string memory _name, string memory _symbol, uint8 _decimals) {
+        name = _name;
+        symbol = _symbol;
+        decimals = _decimals;
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner {
+        require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
+
+    function mint(address to, uint value) public onlyOwner {
+        balanceOf[to] += value;
+        emit Mint(to, value);
+    }
+
+    function transfer(address to, uint value) public {
+        require(balanceOf[msg.sender] >= value, "Insufficient balance");
+        balanceOf[msg.sender] -= value;
+        balanceOf[to] += value;
+        emit Transfer(msg.sender, to, value);
+    }
+}
